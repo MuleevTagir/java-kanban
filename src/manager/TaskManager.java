@@ -1,3 +1,10 @@
+package manager;
+
+import model.Epic;
+import model.Status;
+import model.Subtask;
+import model.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -163,16 +170,16 @@ public class TaskManager {
 
             Integer countSubtask = epic.getSubTaskList().size();
             if (Objects.equals(subtaskGroupByStatus.get(Status.NEW.toString()), countSubtask)) {
-                epicHashMap.get(epicId).setStatus(Status.NEW);
+                epic.setStatus(Status.NEW);
                 return;
             }
 
             if (Objects.equals(subtaskGroupByStatus.get(Status.DONE.toString()), countSubtask)) {
-                epicHashMap.get(epicId).setStatus(Status.DONE);
+                epic.setStatus(Status.DONE);
                 return;
             }
 
-            epicHashMap.get(epicId).setStatus(Status.IN_PROGRESS);
+            epic.setStatus(Status.IN_PROGRESS);
         }
     }
 }
