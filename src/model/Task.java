@@ -2,7 +2,7 @@ package model;
 
 import java.util.Objects;
 
-public class Task {
+public class Task implements Cloneable {
     private Integer id = -1;
     private String title;
     private String description;
@@ -73,5 +73,14 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    @Override
+    public Task clone() {
+        try {
+            return (Task) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
