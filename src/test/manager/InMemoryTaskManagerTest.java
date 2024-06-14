@@ -13,7 +13,7 @@ class InMemoryTaskManagerTest {
 
     //проверьте, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
     @Test
-    void test1() {
+    void shouldCorrectSomeTasksAndFindById() {
         Task taskNew = new Task("Заголовок", "Описание",  Status.NEW);
         Task taskInProgress = new Task("Заголовок", "Описание",  Status.IN_PROGRESS);
         Task taskDone = new Task("Заголовок", "Описание",  Status.DONE);

@@ -18,7 +18,7 @@ class TaskTest {
 
     //проверьте, что экземпляры класса Task равны друг другу, если равен их id;
     @Test
-    void test1() {
+    void shouldEqualsSomeTasksById() {
         Task task = new Task();
         this.taskManager.addTask(task);
         Task expectedTask = new Task();
@@ -31,7 +31,7 @@ class TaskTest {
 
     //проверьте, что наследники класса Task равны друг другу, если равен их id;
     @Test
-    void test2() {
+    void shouldEqualsSomeChildTasksById() {
         Epic epic = new Epic();
         Subtask subtask = new Subtask();
         this.taskManager.addSubtask(epic, subtask);
@@ -45,7 +45,7 @@ class TaskTest {
 
     //cоздайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
-    void test3() {
+    void shouldImmutableTasksAfterAdd() {
         Task expectedTask = new Task("Заголовок", "Описание", Status.IN_PROGRESS);
         taskManager.addTask(expectedTask);
 
@@ -59,7 +59,7 @@ class TaskTest {
 
     //проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
     @Test
-    void test4() {
+    void shouldGenerationNotConflictWithId() {
         Task task1 = new Task("Заголовок 1", "Описание 1", Status.IN_PROGRESS);
         taskManager.addTask(task1);
         Task task2 = new Task("Заголовок 2", "Описание 2", Status.DONE);
@@ -75,7 +75,7 @@ class TaskTest {
 
     //убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     @Test
-    void test5() {
+    void shouldSafeSaveHistoryItem() {
         Task task = new Task("Заголовок", "Описание", Status.IN_PROGRESS);
         taskManager.addTask(task);
 
