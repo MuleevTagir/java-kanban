@@ -6,7 +6,6 @@ import model.Status;
 import model.Subtask;
 import model.Task;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.Managers;
 
@@ -46,7 +45,7 @@ class TaskTest {
     //cоздайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
     void shouldImmutableTasksAfterAdd() {
-        Task expectedTask = new Task("Заголовок", "Описание", Status.IN_PROGRESS);
+        Task expectedTask = new Task(0, "Заголовок", "Описание", Status.IN_PROGRESS);
         taskManager.addTask(expectedTask);
 
         Task actualTask = taskManager.getTaskList().get(0);
@@ -60,9 +59,9 @@ class TaskTest {
     //проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
     @Test
     void shouldGenerationNotConflictWithId() {
-        Task task1 = new Task("Заголовок 1", "Описание 1", Status.IN_PROGRESS);
+        Task task1 = new Task(0, "Заголовок 1", "Описание 1", Status.IN_PROGRESS);
         taskManager.addTask(task1);
-        Task task2 = new Task("Заголовок 2", "Описание 2", Status.DONE);
+        Task task2 = new Task(1, "Заголовок 2", "Описание 2", Status.DONE);
         task2.setId(taskManager.getTaskList().get(0).getId());
         taskManager.addTask(task2);
 
@@ -76,7 +75,7 @@ class TaskTest {
     //убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     @Test
     void shouldSafeSaveHistoryItem() {
-        Task task = new Task("Заголовок", "Описание", Status.IN_PROGRESS);
+        Task task = new Task(0, "Заголовок", "Описание", Status.IN_PROGRESS);
         taskManager.addTask(task);
 
         Task actualTask = taskManager.getTaskById(0);
