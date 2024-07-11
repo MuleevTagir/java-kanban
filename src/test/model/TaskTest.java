@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import utils.Managers;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TaskTest {
 
