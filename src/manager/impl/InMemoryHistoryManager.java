@@ -7,7 +7,7 @@ import model.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final HashMap<Integer, Node> historyHashMap;
+    private final Map<Integer, Node> historyHashMap;
 
     private Node first;
     private Node last;
@@ -22,10 +22,11 @@ public class InMemoryHistoryManager implements HistoryManager {
         Node l = this.last;
         Node newNode = new Node(l, task, null);
         this.last = newNode;
-        if (l == null)
+        if (l == null) {
             this.first = newNode;
-        else
+        } else {
             l.setNext(newNode);
+        }
         return newNode;
     }
 

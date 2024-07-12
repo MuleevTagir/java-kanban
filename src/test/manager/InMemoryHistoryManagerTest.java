@@ -24,6 +24,7 @@ class InMemoryHistoryManagerTest {
     @Test
     void remove() {
         this.historyManager.add(new Task(123, "Название123", "Описание123", Status.NEW));
+        Assertions.assertEquals(1, this.historyManager.getHistory().size());
         this.historyManager.remove(123);
 
         List<Task> taskList = this.historyManager.getHistory();
