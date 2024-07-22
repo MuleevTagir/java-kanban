@@ -21,7 +21,7 @@ class FileBackedTaskManagerTest {
     void setUp() {
         try {
             this.tmpFile = File.createTempFile("data", null);
-        }catch (IOException exception){
+        } catch (IOException exception) {
             System.out.println(exception.getMessage());
         }
     }
@@ -41,10 +41,10 @@ class FileBackedTaskManagerTest {
         Epic epic1 = taskManager.addEpic(new Epic());
         Task task1 = taskManager.addTask(new Task());
         Task task2 = taskManager.addTask(new Task());
-        Subtask subtask1 = taskManager.addSubtask(epic1, new Subtask(4,"Подзадача", "Описание", Status.NEW));
+        Subtask subtask1 = taskManager.addSubtask(epic1, new Subtask(4, "Подзадача", "Описание", Status.NEW));
         Subtask subtask2 = taskManager.addSubtask(epic1, new Subtask());
         Epic epic2 = taskManager.addEpic(new Epic());
-        Subtask subtask3 = taskManager.addSubtask(epic2, new Subtask(7,"Подзадача", "Описание", Status.IN_PROGRESS));
+        Subtask subtask3 = taskManager.addSubtask(epic2, new Subtask(7, "Подзадача", "Описание", Status.IN_PROGRESS));
 
         TaskManager taskManagerLoadFromFile = Managers.getLoadFromFile(this.tmpFile);
 
