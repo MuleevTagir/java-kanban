@@ -94,7 +94,7 @@ public class Task implements Cloneable {
         );
     }
 
-    public static Task fromString(String value){
+    public static Task fromString(String value) {
         String[] arr = value.split(",");
         Task task = new Task(
                 Integer.parseInt(arr[0]),
