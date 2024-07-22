@@ -1,24 +1,32 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Task implements Cloneable {
-    private Integer id = -1;
+    private final Type type;
+    private Integer id;
     private String title;
     private String description;
     private Status status;
+    protected List<Integer> linkList;
 
     public Task() {
-        this.title = "Заголовок";
-        this.description = "Описание";
-        this.status = Status.NEW;
+        this(-1, "s", "string", Status.NEW, Type.TASK);
     }
 
-    public Task(int id, String title, String description, Status status) {
+    public Task(int i, String s, String string, Status status) {
+        this(i, s, string, status, Type.TASK);
+    }
+
+    protected Task(int id, String title, String description, Status status, Type type) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
+        this.type = type;
+        this.linkList = new ArrayList<>();
     }
 
     public void setId(Integer id) {
@@ -68,12 +76,33 @@ public class Task implements Cloneable {
 
     @Override
     public String toString() {
-        return "model.Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}';
+        String linkString = this.linkList.toString()
+                .substring(
+                        1,
+                        this.linkList.toString().length() - 1)
+                .replace(" ", "")
+                .replace(",", ";")
+                .trim();
+
+        return String.format("%d,%s,%s,%s,%s,%s" + System.lineSeparator(),
+                this.id,
+                this.type,
+                this.title,
+                this.status,
+                this.description,
+                linkString
+        );
+    }
+
+    public static Task fromString(String value){
+        String[] arr = value.split(",");
+        Task task = new Task(
+                Integer.parseInt(arr[0]),
+                arr[2],
+                arr[4],
+                Status.valueOf(arr[3])
+        );
+        return task;
     }
 
     @Override
@@ -83,5 +112,13 @@ public class Task implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    public List<Integer> getLinkList() {
+        return linkList;
+    }
+
+    public void setLinkList(List<Integer> linkList) {
+        this.linkList = linkList;
     }
 }
