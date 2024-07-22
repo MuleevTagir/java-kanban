@@ -126,7 +126,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             throw new ManagerSaveException(String.format("%s: %s", "Ошибка чтения файла", file.getName()));
         }
 
-        if(data.isEmpty()){
+        if (data.isEmpty()) {
             return fileBackedTaskManager;
         }
 
