@@ -18,17 +18,13 @@ class FileBackedTaskManagerTest {
     private File tmpFile;
 
     @BeforeEach
-    void setUp() {
-        try {
-            this.tmpFile = File.createTempFile("data", null);
-        } catch (IOException exception) {
-            System.out.println(exception.getMessage());
-        }
+    void setUp() throws IOException {
+        this.tmpFile = File.createTempFile("data", null);
     }
 
     @Test
     void loadFromEmptyFile() {
-        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(this.tmpFile);
+        FileBackedTaskManager fileBackedTaskManager = Managers.getFileBackedTaskManager(this.tmpFile);
 
         Assertions.assertEquals(0, fileBackedTaskManager.getEpicList().size());
         Assertions.assertEquals(0, fileBackedTaskManager.getSubtaskList().size());
@@ -46,7 +42,7 @@ class FileBackedTaskManagerTest {
         Epic epic2 = taskManager.addEpic(new Epic());
         Subtask subtask3 = taskManager.addSubtask(epic2, new Subtask(7, "Подзадача", "Описание", Status.IN_PROGRESS));
 
-        TaskManager taskManagerLoadFromFile = Managers.getLoadFromFile(this.tmpFile);
+        TaskManager taskManagerLoadFromFile = Managers.getFileBackedTaskManager(this.tmpFile);
 
         Assertions.assertEquals(taskManager.getEpicList().size(), taskManagerLoadFromFile.getEpicList().size());
         Assertions.assertEquals(taskManager.getSubtaskList().size(), taskManagerLoadFromFile.getSubtaskList().size());

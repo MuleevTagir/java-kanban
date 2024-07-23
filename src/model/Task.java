@@ -1,8 +1,7 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Task implements Cloneable {
     private final Type type;
@@ -76,13 +75,7 @@ public class Task implements Cloneable {
 
     @Override
     public String toString() {
-        String linkString = this.linkList.toString()
-                .substring(
-                        1,
-                        this.linkList.toString().length() - 1)
-                .replace(" ", "")
-                .replace(",", ";")
-                .trim();
+        String linkString = this.linkList.stream().map(String::valueOf).collect(Collectors.joining(";"));
 
         return String.format("%d,%s,%s,%s,%s,%s" + System.lineSeparator(),
                 this.id,

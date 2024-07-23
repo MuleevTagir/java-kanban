@@ -1,9 +1,9 @@
 package manager.impl;
 
+import exception.ManagerLoadException;
 import exception.ManagerSaveException;
 import manager.HistoryManager;
 import model.*;
-import utils.Managers;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -20,6 +20,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public FileBackedTaskManager(HistoryManager historyManager, File file) {
         super(historyManager);
         this.file = file;
+        this.loadFromFile(this.file);
     }
 
     @Override
@@ -116,18 +117,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public static FileBackedTaskManager loadFromFile(File file) {
-        FileBackedTaskManager fileBackedTaskManager = Managers.getFileBackedTaskManager(file);
+    private void loadFromFile(File file) {
+        if (!file.exists() || !file.isFile()) {
+            return;
+        }
 
         String data = "";
         try {
             data = Files.readString(file.toPath());
         } catch (IOException exception) {
-            throw new ManagerSaveException(String.format("%s: %s", "Ошибка чтения файла", file.getName()));
+            throw new ManagerLoadException(String.format("%s: %s", "Ошибка чтения файла", file.getName()));
         }
 
         if (data.isEmpty()) {
-            return fileBackedTaskManager;
+            return;
         }
 
         Map<Integer, Epic> epicMap = new HashMap<>();
@@ -156,18 +159,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
 
         for (Integer epicId : epicMap.keySet()) {
-            fileBackedTaskManager.addEpic(epicMap.get(epicId));
+            this.addEpic(epicMap.get(epicId));
         }
 
         for (Integer subtaskId : subtaskMap.keySet()) {
             Subtask subtask = subtaskMap.get(subtaskId);
-            fileBackedTaskManager.addSubtask(epicMap.get(subtask.getLinkList().get(0)), subtask);
+            this.addSubtask(epicMap.get(subtask.getLinkList().get(0)), subtask);
         }
 
         for (Integer taskId : taskMap.keySet()) {
-            fileBackedTaskManager.addTask(taskMap.get(taskId));
+            this.addTask(taskMap.get(taskId));
         }
-
-        return fileBackedTaskManager;
     }
 }
