@@ -4,6 +4,7 @@ import exception.ManagerLoadException;
 import exception.ManagerSaveException;
 import manager.HistoryManager;
 import model.*;
+import utils.Managers;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,10 +18,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private final File file;
 
-    public FileBackedTaskManager(HistoryManager historyManager, File file) {
+    private FileBackedTaskManager(HistoryManager historyManager, File file) {
         super(historyManager);
         this.file = file;
-        this.loadFromFile(this.file);
     }
 
     @Override
@@ -117,9 +117,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    private void loadFromFile(File file) {
+    public static FileBackedTaskManager loadFromFile(File file) {
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(new InMemoryHistoryManager(), file);
+
         if (!file.exists() || !file.isFile()) {
-            return;
+            return fileBackedTaskManager;
         }
 
         String data = "";
@@ -130,7 +132,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
 
         if (data.isEmpty()) {
-            return;
+            return fileBackedTaskManager;
         }
 
         Map<Integer, Epic> epicMap = new HashMap<>();
@@ -159,16 +161,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
 
         for (Integer epicId : epicMap.keySet()) {
-            this.addEpic(epicMap.get(epicId));
+            fileBackedTaskManager.addEpic(epicMap.get(epicId));
         }
 
         for (Integer subtaskId : subtaskMap.keySet()) {
             Subtask subtask = subtaskMap.get(subtaskId);
-            this.addSubtask(epicMap.get(subtask.getLinkList().get(0)), subtask);
+            fileBackedTaskManager.addSubtask(epicMap.get(subtask.getLinkList().get(0)), subtask);
         }
 
         for (Integer taskId : taskMap.keySet()) {
-            this.addTask(taskMap.get(taskId));
+            fileBackedTaskManager.addTask(taskMap.get(taskId));
         }
+
+        return fileBackedTaskManager;
     }
 }

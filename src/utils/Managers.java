@@ -15,10 +15,10 @@ public class Managers {
     }
 
     public static FileBackedTaskManager getFileBackedTaskManager(File filename) {
-        return new FileBackedTaskManager(Managers.getDefaultHistory(), filename);
+        return FileBackedTaskManager.loadFromFile(filename);
     }
 
-    private static HistoryManager getDefaultHistory() {
+    public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }
 }
