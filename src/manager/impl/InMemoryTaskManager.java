@@ -13,7 +13,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> taskHashMap;
     private final HashMap<Integer, Subtask> subtaskHashMap;
     private final HashMap<Integer, Epic> epicHashMap;
-    private final HistoryManager historyManager;
+    protected final HistoryManager historyManager;
     private Integer lastId;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
@@ -82,7 +82,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtask.setId(getNextId());
         this.subtaskHashMap.put(subtask.getId(), subtask);
         epic.addSubTask(subtask);
-        this.updateStatusEpic(subtask.getEpicId());
+        this.updateStatusEpic(subtask.getLinkList().get(0));
         return subtask;
     }
 
@@ -104,7 +104,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateSubtask(Subtask subtask) {
         if (this.subtaskHashMap.containsKey(subtask.getId())) {
             this.subtaskHashMap.put(subtask.getId(), subtask);
-            this.updateStatusEpic(subtask.getEpicId());
+            this.updateStatusEpic(subtask.getLinkList().get(0));
         }
     }
 
@@ -125,7 +125,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeSubtaskById(Integer id) {
         if (this.subtaskHashMap.containsKey(id)) {
-            Integer epicId = this.getSubtaskById(id).getEpicId();
+            Integer epicId = this.getSubtaskById(id).getLinkList().get(0);
             this.subtaskHashMap.remove(id);
             this.historyManager.remove(id);
 

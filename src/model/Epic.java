@@ -1,42 +1,38 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Epic extends Task {
-    private final List<Integer> subtaskIdList;
-
     public Epic() {
-        this.subtaskIdList = new ArrayList<>();
+        super(-1, "title", "description", Status.NEW, Type.EPIC);
     }
 
     public Epic(int id, String title, String description, Status status) {
-        super(id, title, description, status);
-        this.subtaskIdList = new ArrayList<>();
+        super(id, title, description, status, Type.EPIC);
     }
 
     public List<Integer> getSubTaskList() {
-        return subtaskIdList;
+        return this.linkList;
     }
 
     public void addSubTask(Subtask subtask) {
-        subtask.setEpicId(this.getId());
-        subtaskIdList.add(subtask.getId());
+        subtask.setLinkList(List.of(this.getId()));
+        this.linkList.add(subtask.getId());
     }
 
     public void removeSubtaskById(Integer id) {
-        subtaskIdList.remove(id);
+        this.linkList.remove(id);
     }
 
-    @Override
-    public String toString() {
-        return "model.Epic{" +
-                "id=" + this.getId() +
-                ", title='" + this.getTitle() + '\'' +
-                ", description='" + this.getDescription() + '\'' +
-                ", status=" + this.getStatus().toString() +
-                ", taskIdList=" + Arrays.toString(this.subtaskIdList.toArray()) +
-                "}";
+    public static Epic fromString(String value) {
+        String[] arr = value.split(",");
+        Epic epic = new Epic(
+                Integer.parseInt(arr[0]),
+                arr[2],
+                arr[4],
+                Status.valueOf(arr[3])
+        );
+
+        return epic;
     }
 }

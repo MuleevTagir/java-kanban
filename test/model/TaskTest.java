@@ -1,4 +1,4 @@
-package test.model;
+package model;
 
 import manager.TaskManager;
 import model.Epic;

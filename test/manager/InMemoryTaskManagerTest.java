@@ -1,4 +1,4 @@
-package test.manager;
+package manager;
 
 import manager.TaskManager;
 import model.Status;
@@ -14,9 +14,9 @@ class InMemoryTaskManagerTest {
     //проверьте, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
     @Test
     void shouldCorrectSomeTasksAndFindById() {
-        Task taskNew = new Task(0,"Заголовок", "Описание",  Status.NEW);
-        Task taskInProgress = new Task(1, "Заголовок", "Описание",  Status.IN_PROGRESS);
-        Task taskDone = new Task(2, "Заголовок", "Описание",  Status.DONE);
+        Task taskNew = new Task(0, "Заголовок", "Описание", Status.NEW);
+        Task taskInProgress = new Task(1, "Заголовок", "Описание", Status.IN_PROGRESS);
+        Task taskDone = new Task(2, "Заголовок", "Описание", Status.DONE);
 
         taskManager.addTask(taskNew);
         taskManager.addTask(taskInProgress);
