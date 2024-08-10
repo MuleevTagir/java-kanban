@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 
-
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private final File file;
@@ -99,7 +98,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file))) {
-            fileWriter.write("id,type,name,status,description,link" + System.lineSeparator());
+            fileWriter.write("id,type,name,status,description,duration,start,link" + System.lineSeparator());
             for (Epic epic : this.getEpicList()) {
                 fileWriter.write(epic.toString());
             }

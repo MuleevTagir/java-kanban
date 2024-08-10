@@ -1,11 +1,13 @@
 package manager;
 
-import manager.TaskManager;
 import model.Status;
 import model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import utils.Managers;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 class InMemoryTaskManagerTest {
 
@@ -14,9 +16,9 @@ class InMemoryTaskManagerTest {
     //проверьте, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
     @Test
     void shouldCorrectSomeTasksAndFindById() {
-        Task taskNew = new Task(0, "Заголовок", "Описание", Status.NEW);
-        Task taskInProgress = new Task(1, "Заголовок", "Описание", Status.IN_PROGRESS);
-        Task taskDone = new Task(2, "Заголовок", "Описание", Status.DONE);
+        Task taskNew = new Task(0, "Заголовок", "Описание", Status.NEW, Duration.ofDays(1), LocalDateTime.now());
+        Task taskInProgress = new Task(1, "Заголовок", "Описание", Status.IN_PROGRESS, Duration.ofDays(1), LocalDateTime.now());
+        Task taskDone = new Task(2, "Заголовок", "Описание", Status.DONE, Duration.ofDays(1), LocalDateTime.now());
 
         taskManager.addTask(taskNew);
         taskManager.addTask(taskInProgress);
