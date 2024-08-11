@@ -1,5 +1,6 @@
 package utils;
 
+import exception.IntersectionTimeException;
 import manager.impl.FileBackedTaskManager;
 import manager.impl.InMemoryHistoryManager;
 import manager.impl.InMemoryTaskManager;
@@ -14,7 +15,7 @@ public class Managers {
         return new InMemoryTaskManager(Managers.getDefaultHistory());
     }
 
-    public static FileBackedTaskManager getFileBackedTaskManager(File filename) {
+    public static FileBackedTaskManager getFileBackedTaskManager(File filename) throws IntersectionTimeException {
         return FileBackedTaskManager.loadFromFile(filename);
     }
 

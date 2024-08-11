@@ -1,12 +1,15 @@
 package manager;
 
+import exception.IntersectionTimeException;
 import model.Epic;
 import model.Subtask;
 import model.Task;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
+
     List<Task> getTaskList();
 
     List<Subtask> getSubtaskList();
@@ -19,15 +22,15 @@ public interface TaskManager {
 
     Epic getEpicById(Integer id);
 
-    Task addTask(Task task);
+    Task addTask(Task task) throws IntersectionTimeException;
 
-    Subtask addSubtask(Epic epic, Subtask subtask);
+    Subtask addSubtask(Epic epic, Subtask subtask) throws IntersectionTimeException;
 
     Epic addEpic(Epic epic);
 
-    void updateTask(Task task);
+    void updateTask(Task task) throws IntersectionTimeException;
 
-    void updateSubtask(Subtask subtask);
+    void updateSubtask(Subtask subtask) throws IntersectionTimeException;
 
     void updateEpic(Epic epic);
 
@@ -46,4 +49,6 @@ public interface TaskManager {
     List<Subtask> getSubtaskListByEpic(Epic epic);
 
     List<Task> getHistory();
+
+    Set<Task> getPrioritizedTasks();
 }

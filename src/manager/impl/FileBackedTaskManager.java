@@ -1,5 +1,6 @@
 package manager.impl;
 
+import exception.IntersectionTimeException;
 import exception.ManagerLoadException;
 import exception.ManagerSaveException;
 import manager.HistoryManager;
@@ -12,7 +13,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 
-
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private final File file;
@@ -23,14 +23,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task addTask(Task task) {
+    public Task addTask(Task task) throws IntersectionTimeException {
         super.addTask(task);
         save();
         return task;
     }
 
     @Override
-    public Subtask addSubtask(Epic epic, Subtask subtask) {
+    public Subtask addSubtask(Epic epic, Subtask subtask) throws IntersectionTimeException {
         super.addSubtask(epic, subtask);
         save();
         return subtask;
@@ -44,13 +44,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateTask(Task task) {
+    public void updateTask(Task task) throws IntersectionTimeException {
         super.updateTask(task);
         save();
     }
 
     @Override
-    public void updateSubtask(Subtask subtask) {
+    public void updateSubtask(Subtask subtask) throws IntersectionTimeException {
         super.updateSubtask(subtask);
         save();
     }
@@ -99,7 +99,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file))) {
-            fileWriter.write("id,type,name,status,description,link" + System.lineSeparator());
+            fileWriter.write("id,type,name,status,description,duration,start,link" + System.lineSeparator());
             for (Epic epic : this.getEpicList()) {
                 fileWriter.write(epic.toString());
             }
@@ -116,7 +116,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public static FileBackedTaskManager loadFromFile(File file) {
+    public static FileBackedTaskManager loadFromFile(File file) throws IntersectionTimeException {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(new InMemoryHistoryManager(), file);
 
         if (!file.exists() || !file.isFile()) {
