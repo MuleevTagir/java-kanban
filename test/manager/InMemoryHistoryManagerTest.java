@@ -1,5 +1,6 @@
 package manager;
 
+import exception.IntersectionTimeException;
 import manager.impl.InMemoryHistoryManager;
 import model.Status;
 import model.Task;

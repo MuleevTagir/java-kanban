@@ -1,12 +1,15 @@
 package model;
 
+import exception.IntersectionTimeException;
 import manager.TaskManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import utils.Managers;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 class TaskTest {
@@ -15,7 +18,7 @@ class TaskTest {
 
     //проверьте, что экземпляры класса Task равны друг другу, если равен их id;
     @Test
-    void shouldEqualsSomeTasksById() {
+    void shouldEqualsSomeTasksById() throws IntersectionTimeException {
         Task task = new Task();
         this.taskManager.addTask(task);
         Task expectedTask = new Task();
@@ -28,7 +31,7 @@ class TaskTest {
 
     //проверьте, что наследники класса Task равны друг другу, если равен их id;
     @Test
-    void shouldEqualsSomeChildTasksById() {
+    void shouldEqualsSomeChildTasksById() throws IntersectionTimeException {
         Epic epic = new Epic();
         Subtask subtask = new Subtask();
         this.taskManager.addSubtask(epic, subtask);
@@ -42,7 +45,7 @@ class TaskTest {
 
     //cоздайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     @Test
-    void shouldImmutableTasksAfterAdd() {
+    void shouldImmutableTasksAfterAdd() throws IntersectionTimeException {
         Task expectedTask = new Task(0, "Заголовок", "Описание", Status.IN_PROGRESS, Duration.ofDays(1), LocalDateTime.now());
         taskManager.addTask(expectedTask);
 
@@ -56,10 +59,10 @@ class TaskTest {
 
     //проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
     @Test
-    void shouldGenerationNotConflictWithId() {
+    void shouldGenerationNotConflictWithId() throws IntersectionTimeException {
         Task task1 = new Task(0, "Заголовок 1", "Описание 1", Status.IN_PROGRESS, Duration.ofDays(1), LocalDateTime.now());
         taskManager.addTask(task1);
-        Task task2 = new Task(1, "Заголовок 2", "Описание 2", Status.DONE, Duration.ofDays(1), LocalDateTime.now());
+        Task task2 = new Task(1, "Заголовок 2", "Описание 2", Status.DONE, Duration.ofDays(1), LocalDateTime.now().plusDays(3));
         task2.setId(taskManager.getTaskList().get(0).getId());
         taskManager.addTask(task2);
 
@@ -72,7 +75,7 @@ class TaskTest {
 
     //убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     @Test
-    void shouldSafeSaveHistoryItem() {
+    void shouldSafeSaveHistoryItem() throws IntersectionTimeException {
         Task task = new Task(0, "Заголовок", "Описание", Status.IN_PROGRESS, Duration.ofDays(1), LocalDateTime.now());
         taskManager.addTask(task);
 

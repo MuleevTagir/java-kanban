@@ -88,13 +88,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task addTask(Task task) {
-        try {
-            if (isIntersectionTime(task)) {
-                throw new IntersectionTimeException("Время уже занято другой задачей");
-            }
-        } catch (IntersectionTimeException e) {
-            System.out.println(e.getMessage());
+    public Task addTask(Task task) throws IntersectionTimeException {
+        if (isIntersectionTime(task)) {
+            throw new IntersectionTimeException("Время уже занято другой задачей");
         }
 
         task.setId(getNextId());
@@ -105,13 +101,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask addSubtask(Epic epic, Subtask subtask) {
-        try {
-            if (isIntersectionTime(subtask)) {
-                throw new IntersectionTimeException("Время уже занято другой задачей");
-            }
-        } catch (IntersectionTimeException e) {
-            System.out.println(e.getMessage());
+    public Subtask addSubtask(Epic epic, Subtask subtask) throws IntersectionTimeException {
+        if (isIntersectionTime(subtask)) {
+            throw new IntersectionTimeException("Время уже занято другой задачей");
         }
 
         subtask.setId(getNextId());
@@ -144,15 +136,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateTask(Task task) {
+    public void updateTask(Task task) throws IntersectionTimeException {
         if (this.taskHashMap.containsKey(task.getId())) {
-            try {
-                if (isIntersectionTime(task)) {
-                    throw new IntersectionTimeException("Время уже занято другой задачей");
-                }
-            } catch (IntersectionTimeException e) {
-                System.out.println(e.getMessage());
+            if (isIntersectionTime(task)) {
+                throw new IntersectionTimeException("Время уже занято другой задачей");
             }
+
             this.taskHashMap.put(task.getId(), task);
             this.prioritizedTasks.remove(task);
             this.prioritizedTasks.add(task);
@@ -160,15 +149,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateSubtask(Subtask subtask) {
+    public void updateSubtask(Subtask subtask) throws IntersectionTimeException {
         if (this.subtaskHashMap.containsKey(subtask.getId())) {
-            try {
-                if (isIntersectionTime(subtask)) {
-                    throw new IntersectionTimeException("Время уже занято другой задачей");
-                }
-            } catch (IntersectionTimeException e) {
-                System.out.println(e.getMessage());
+            if (isIntersectionTime(subtask)) {
+                throw new IntersectionTimeException("Время уже занято другой задачей");
             }
+
             this.subtaskHashMap.put(subtask.getId(), subtask);
             this.updateStatusEpic(subtask.getLinkList().get(0));
             this.prioritizedTasks.remove(subtask);
