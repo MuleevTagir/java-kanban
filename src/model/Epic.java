@@ -19,10 +19,12 @@ public class Epic extends Task {
 
     public Epic() {
         super(-1, "title", "description", Status.NEW, Type.EPIC, Duration.ofDays(0), LocalDateTime.now());
+        this.endTime = this.getStartTime();
     }
 
     public Epic(int id, String title, String description, Status status) {
         super(id, title, description, status, Type.EPIC, Duration.ofDays(0), LocalDateTime.now());
+        this.endTime = this.getStartTime();
     }
 
     public List<Integer> getSubTaskList() {

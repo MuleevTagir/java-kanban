@@ -1,20 +1,16 @@
 package handler;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import exception.IntersectionTimeException;
 import manager.TaskManager;
 import model.Epic;
 import model.Subtask;
-import typeadapter.DurationAdapter;
-import typeadapter.LocalDateTimeAdapter;
+import utils.GsonHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class SubtasksHandler extends BaseHttpHandler {
@@ -32,10 +28,7 @@ public class SubtasksHandler extends BaseHttpHandler {
         }
 
         String method = exchange.getRequestMethod();
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
-        gsonBuilder.registerTypeAdapter(Duration.class, new DurationAdapter());
-        Gson gson = gsonBuilder.create();
+        Gson gson = GsonHelper.getGson();
         switch (method) {
             case "GET": {
                 if (id.isPresent()) {
