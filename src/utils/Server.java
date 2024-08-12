@@ -8,23 +8,17 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class Server {
-    private final TaskManager taskManager;
-    private HttpServer httpServer;
+    private final HttpServer httpServer;
     private static final Integer PORT = 8080;
 
-    public Server(TaskManager taskManager) {
-        this.taskManager = taskManager;
+    public Server(TaskManager taskManager) throws IOException {
+        this.httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
 
-        try {
-            this.httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
-        } catch (IOException exception) {
-            System.out.println(exception.getMessage());
-        }
-        httpServer.createContext("/tasks", new TasksHandler(this.taskManager));
-        httpServer.createContext("/subtasks", new SubtasksHandler(this.taskManager));
-        httpServer.createContext("/epics", new EpicHandler(this.taskManager));
-        httpServer.createContext("/history", new HistoryHandler(this.taskManager));
-        httpServer.createContext("/prioritized", new PrioritizedHandler(this.taskManager));
+        httpServer.createContext("/tasks", new TasksHandler(taskManager));
+        httpServer.createContext("/subtasks", new SubtasksHandler(taskManager));
+        httpServer.createContext("/epics", new EpicHandler(taskManager));
+        httpServer.createContext("/history", new HistoryHandler(taskManager));
+        httpServer.createContext("/prioritized", new PrioritizedHandler(taskManager));
     }
 
     public void start() {

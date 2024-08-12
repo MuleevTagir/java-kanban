@@ -25,26 +25,20 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ServerTest {
-    private final TaskManager manager;
-    private final Server server;
-    private final Gson gson;
-    private static final String URL = "http://localhost:8080";
-
-    private final HttpClient client;
+    TaskManager manager;
+    Server server;
+    String URL = "http://localhost:8080";
+    Gson gson = GsonHelper.getGson();
+    HttpClient client = HttpClient.newHttpClient();
 
     public ServerTest() throws IOException {
-        this.manager = Managers.getDefault();
-        this.server = new Server(this.manager);
-        this.gson = GsonHelper.getGson();
-        this.client = HttpClient.newHttpClient();
     }
 
     @BeforeEach
-    public void setUp() {
-        this.manager.removeTaskAll();
-        this.manager.removeSubtaskAll();
-        this.manager.removeEpicAll();
-        this.server.start();
+    public void setUp() throws IOException {
+        manager = Managers.getDefault();
+        server = new Server(manager);
+        server.start();
     }
 
     @AfterEach
