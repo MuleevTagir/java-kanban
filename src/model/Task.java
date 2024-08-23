@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Task implements Cloneable {
-    private final Type type;
+    private Type type;
     private Integer id;
     private String title;
     private String description;
@@ -44,6 +44,14 @@ public class Task implements Cloneable {
         this.duration = duration;
         this.startTime = startTime;
         this.linkList = new ArrayList<>();
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public void setId(Integer id) {
